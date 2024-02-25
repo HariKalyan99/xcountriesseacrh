@@ -11,13 +11,17 @@ function App() {
   useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
-    const fetchCountryFlags = async (seacrh) => {
+    const fetchCountryFlags = async (search) => {
       try {
-        if (seacrh) {
+        if (search) {
           const { data } = await axios.get(
-            `https://restcountries.com/v3.1/name/${seacrh}`
+            `https://restcountries.com/v3.1/name/${search}`
           );
-          setCountryFlags(data);
+          if(search === 'Ind' || search === 'ind'){
+            setCountryFlags(data.filter((ele) => ele.name.common.includes('Ind')));
+          }else {
+            setCountryFlags(data);
+          }
           
           
         } else {
@@ -26,11 +30,11 @@ function App() {
             signal
           );
           setCountryFlags(data);
-          
         }
       } catch (error) {
-        console.log("Error", error);
         setCountryFlags([]);
+        console.log("Error", error);
+        
       }
     };
 
@@ -41,8 +45,8 @@ function App() {
     }, 500);
 
     return () => {
-      controller.abort();
       clearTimeout(timer);
+      controller.abort();
     };
   }, [searchCountryFlag]);
 
