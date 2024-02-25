@@ -18,15 +18,19 @@ function App() {
             `https://restcountries.com/v3.1/name/${seacrh}`
           );
           setCountryFlags(data);
+          
+          
         } else {
           const { data } = await axios.get(
             "https://restcountries.com/v3.1/all",
             signal
           );
           setCountryFlags(data);
+          
         }
       } catch (error) {
         console.log("Error", error);
+        setCountryFlags([]);
       }
     };
 
@@ -48,7 +52,7 @@ function App() {
   return (
     <div>
       <Searchflag onSearchTerm={onSearchTerm}/>
-      <Countryflags countryFlags={countryFlags} />
+     <Countryflags countryFlags={countryFlags} />
     </div>
   );
 }
